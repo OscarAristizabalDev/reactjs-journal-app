@@ -1,5 +1,5 @@
 import { Box } from "@mui/material"
-import { NavBar } from "../components";
+import { NavBar, SideBar } from "../components";
 
 interface JournalLayoutProps {
     // Los componentes hijos son de tipo JSX.Element
@@ -15,6 +15,7 @@ export const JournalLayout = ({ children }: JournalLayoutProps) => {
             <NavBar drawerWidth={drawerWidth} />
 
             {/* Sidebar drawerWidth */}
+            <SideBar drawerWidth={drawerWidth}></SideBar>
 
             <Box
                 component='main'
