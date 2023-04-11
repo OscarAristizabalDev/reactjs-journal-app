@@ -15,11 +15,11 @@ export const JournalLayout = ({ children }: JournalLayoutProps) => {
             <NavBar drawerWidth={drawerWidth} />
 
             {/* Sidebar drawerWidth */}
-            <SideBar drawerWidth={drawerWidth}></SideBar>
+            <SideBar drawerWidth={drawerWidth} />
 
             <Box
                 component='main'
-                sx={{ flexGrow: 1, p: 3 }} // Permite adicionar estilos
+                sx={{ flexGrow: 1, p: 3, pt: 9  }} // Permite adicionar estilos
             >
                 {/* Toolbar */}
                 {children}
