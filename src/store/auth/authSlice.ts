@@ -4,7 +4,7 @@ import { AuthAction } from './interfaces';
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        status: 'cheking', // 'not-authenticated', 'authenticated'
+        status: 'not-authenticated', //'cheking', 'not-authenticated', 'authenticated'
         uid: null,
         email: null,
         displayName: null,
@@ -18,11 +18,11 @@ export const authSlice = createSlice({
         logout: (state) => {
 
         },
-        checkCredentials: (state) => {
-
+        setCheckingCredentials: (state) => {
+            state.status = 'cheking'
         }
     }
 });
 
 // Action creators are generated for each case reducer function
-export const { login, logout, checkCredentials } = authSlice.actions;
+export const { login, logout, setCheckingCredentials } = authSlice.actions;
