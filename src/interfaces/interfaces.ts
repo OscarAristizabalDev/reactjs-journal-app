@@ -12,3 +12,9 @@ export interface AuthAction {
     status: string, // 'not-authenticated', 'authenticated'
     ok: boolean
 }
+
+export interface RegistarPage {
+    email: [any, string],
+    password: [any, string],
+    displayName: [any, string]
+}

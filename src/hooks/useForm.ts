@@ -1,16 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // El custom hook recibe un objeto inicial con las propiedades
-export const useForm = (initialForm = {}) => {
+export const useForm = (initialForm = {}, formValidations = {}) => {
 
     // Se utiliza el useState para manipular los valores del objeto
     // el cual quedan almacendado en la variable formState
     // y sus valores de modifican desde la "funcion" setFormState
     const [formState, setFormState] = useState(initialForm);
+    const [formValidation, setFormValidation] = useState({});
+
+    // useEffect es un hook de react que se ejecuta cada que hay un cambio
+    useEffect(() => {
+        createValidators();
+    }, [formState]); // cada que el formState cambio se llama el metodo createValidators
+
 
     // Del objeto event destructuramos el target
     const onCambiarInput = ({ target }: any) => {
-        
+
         // destructuracion del target
         const { name, value } = target;
         //console.log(name, value);
@@ -24,10 +31,27 @@ export const useForm = (initialForm = {}) => {
         setFormState(initialForm)
     }
 
+    const createValidators = () => {
+        // objeto que va a retornar las validaciones de cada uno de los campos del formulario
+        const formCheckedValues = {};
+        // Se recorren todas las llaves que tiene el objeto formValidations, es decir los campos del formulario con sus reglas de validacion
+        for (const formField of Object.keys(formValidations)) {
+            // destructuramos el objeto formValidations, tomando la funcion que valida y el mensaje en caso de cumplirse
+            const [fn, errorMessage] = formValidations[formField];
+            // a cada campo del formulario se ejecuta la función que valida, si cumple retorna un null, de lo contrario el mensaje de error
+            formCheckedValues[`${formField}Valid`] = fn(formState[formField]) ? null : errorMessage;
+        }
+        console.log(formCheckedValues)
+        setFormValidation(formCheckedValues);
+
+    }
+
     return {
         onCambiarInput,
         onResetForm,
         formState,
-        ...formState // Esto permite retornas las propiedad del objeto (username, email, password)
+        ...formState, // Esto permite retornas las propiedad del objeto (username, email, password)
+        formValidation,
+        ...formValidation // Esto permite retornas las propiedad del objeto 
     };
 }

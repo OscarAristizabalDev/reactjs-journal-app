@@ -4,6 +4,7 @@ import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 
 import { AuthLayout } from "../layout/AuthLayout"
 import { useForm } from "../../hooks"
+import { RegistarPage } from "../../interfaces"
 
 const formData = {
     email: 'oscar@gmail.com',
@@ -11,14 +12,25 @@ const formData = {
     displayName: 'Oscar Aristizabal'
 }
 
+const formValidations = {
+    email: [(value: string) => value.includes('@'), 'El correo debe tener un @'],
+    password: [(value: string) => value.length >= 6, 'El password debe tener más de 6 letras'],
+    displayName: [(value: string) => value.length >= 1, 'El nombre es obligatorio'],
+}
+
 export const RegisterPage = () => {
 
-    const { displayName, email, password, onCambiarInput, formState }: any = useForm(formData);
+    const {
+        formState, displayName, email, password, onCambiarInput,
+        isFormValid, displayNameValid, emailValid, passwordValid
+    }: any = useForm(formData, formValidations);
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // previe el recarge de la pantalla
         console.log(formState)
     }
+
+    console.log(emailValid)
 
     return (
         <AuthLayout title="Crear cuenta">
@@ -34,6 +46,8 @@ export const RegisterPage = () => {
                             name="displayName"
                             value={displayName}
                             onChange={(event) => onCambiarInput(event)}
+                            error={!displayNameValid}
+                            helperText={displayNameValid}
                         />
                     </Grid>
 
@@ -64,9 +78,9 @@ export const RegisterPage = () => {
 
                     <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
                         <Grid item xs={12}>
-                            <Button 
+                            <Button
                                 type="submit"
-                                variant="contained" 
+                                variant="contained"
                                 fullWidth
                             >
                                 Crear cuenta
