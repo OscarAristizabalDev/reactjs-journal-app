@@ -1,21 +1,40 @@
+import { FormEvent } from "react"
 import { Link as RouterLink } from "react-router-dom"
-import { Google } from "@mui/icons-material"
 import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+
 import { AuthLayout } from "../layout/AuthLayout"
+import { useForm } from "../../hooks"
+
+const formData = {
+    email: 'oscar@gmail.com',
+    password: '1234',
+    displayName: 'Oscar Aristizabal'
+}
 
 export const RegisterPage = () => {
+
+    const { displayName, email, password, onCambiarInput, formState }: any = useForm(formData);
+
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // previe el recarge de la pantalla
+        console.log(formState)
+    }
+
     return (
         <AuthLayout title="Crear cuenta">
-            <form>
+            <form onSubmit={onSubmit}>
                 <Grid container>
                     {/* xs indica el tamano a tomar en relación con el div o grid */}
                     <Grid item xs={12} sx={{ mt: 2 }}>
                         <TextField
                             label="Nombre completo"
                             type="text"
-                            placeholder="Nombre Ccompleto"
-                            fullWidth>
-                        </TextField>
+                            placeholder="Nombre Completo"
+                            fullWidth
+                            name="displayName"
+                            value={displayName}
+                            onChange={(event) => onCambiarInput(event)}
+                        />
                     </Grid>
 
                     {/* xs indica el tamano a tomar en relación con el div o grid */}
@@ -24,8 +43,11 @@ export const RegisterPage = () => {
                             label="Correo"
                             type="email"
                             placeholder="correo@google.com"
-                            fullWidth>
-                        </TextField>
+                            fullWidth
+                            name="email"
+                            value={email}
+                            onChange={(event) => onCambiarInput(event)}
+                        />
                     </Grid>
 
                     <Grid item xs={12} sx={{ mt: 2 }}>
@@ -33,13 +55,20 @@ export const RegisterPage = () => {
                             label="Contrasena"
                             type="password"
                             placeholder="contrasena"
-                            fullWidth>
-                        </TextField>
+                            fullWidth
+                            name="password"
+                            value={password}
+                            onChange={(event) => onCambiarInput(event)}
+                        />
                     </Grid>
 
                     <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
                         <Grid item xs={12}>
-                            <Button variant="contained" fullWidth>
+                            <Button 
+                                type="submit"
+                                variant="contained" 
+                                fullWidth
+                            >
                                 Crear cuenta
                             </Button>
                         </Grid>
