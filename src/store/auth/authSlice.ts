@@ -1,31 +1,45 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { AuthAction } from './interfaces';
+import { AuthAction } from '../../interfaces';
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         status: 'not-authenticated', //'cheking', 'not-authenticated', 'authenticated'
-        uid: null,
-        email: null,
-        displayName: null,
-        photoURL: null,
-        errorMessage: null
+        uid: '',
+        email: '',
+        displayName: '',
+        photoURL: '',
+        errorMessage: ''
     },
     reducers: {
         login: (state, action: PayloadAction<AuthAction>) => {
+            let { uid, displayName, email, photoURL } = action.payload.auth;
+            let { status } = action.payload;
 
+            state.status = status;
+            state.uid = uid;
+            state.email = displayName;
+            state.displayName = email;
+            state.photoURL = photoURL;
+            state.errorMessage = ''
         },
-        logout: (state) => {
+        logout: (state, action: PayloadAction<AuthAction>) => {
 
+            let { errorMessage, status } = action.payload;
+
+            state.status = status;
+            state.uid = '';
+            state.email = '';
+            state.displayName = '';
+            state.photoURL = '';
+            state.errorMessage = errorMessage
         },
         setCheckingCredentials: (state) => {
-            state.status = 'cheking'
+            state.status = 'cheking';
+
         },
-        setauthenticatedCredentials: (state) => {
-            state.status = 'authenticated'
-        }
     }
 });
 
 // Action creators are generated for each case reducer function
-export const { login, logout, setCheckingCredentials, setauthenticatedCredentials } = authSlice.actions;
+export const { login, logout, setCheckingCredentials } = authSlice.actions;
