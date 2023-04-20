@@ -55,6 +55,31 @@ export const startRegisterUserWithEmailPassword = (email: string, password: stri
             displayName
         }
 
-        const result = await registerUser(registerUserData);
+        const { ok, uid, photoURL, errorMessage } = await registerUser(registerUserData);
+        // en caso de haber un error en el registro
+        if (!ok) {
+
+            let authAction: AuthAction = {
+                auth: null!,
+                errorMessage: errorMessage,
+                status: 'not-authenticated',
+                ok: ok
+            }
+            return dispatch(logout(authAction));
+        }
+
+        let auth: Auth = {
+            displayName: displayName!,
+            email: email!,
+            photoURL: photoURL!,
+            uid: uid!
+        }
+        let authAction: AuthAction = {
+            auth: auth,
+            errorMessage: '',
+            status: 'authenticated',
+            ok: ok
+        }
+        dispatch(login(authAction));
     }
 }
