@@ -2,24 +2,24 @@ import { FormEvent, useMemo } from "react"
 import { useSelector } from "react-redux"
 import { Link as RouterLink } from "react-router-dom"
 
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Google } from "@mui/icons-material"
 
 import { AuthLayout } from "../layout/AuthLayout"
 import { useForm } from "../../hooks"
 import { RootState, useAppDispatch } from "../../store"
-import { checkAutentication, startGoogleSingIn } from "../../store/auth"
+import { checkAutentication, startGoogleSingIn, startLoginWithEmailPassword } from "../../store/auth"
 
 export const LoginPage = () => {
 
     // con useDispath puedo ejecutar cualquier acción, ya sea desde un thunks, o directamente desde el reducer del store
     const dispatch = useAppDispatch()
     // el hook useSelector de react-redux permite leer datos del store
-    const { status } = useSelector((state: RootState) => state.auth);
+    const { status, errorMessage } = useSelector((state: RootState) => state.auth);
 
     const { email, password, onCambiarInput }: any = useForm({
-        email: 'oscar@gmail.com',
-        password: '123445'
+        email: '',
+        password: ''
     });
 
     // useMemo es un hook que permite memorizar valores, 
@@ -34,6 +34,10 @@ export const LoginPage = () => {
 
     const onGoogleSingIn = () => {
         dispatch(startGoogleSingIn());
+    }
+
+    const onCredentialsSingIn = () => {
+        dispatch(startLoginWithEmailPassword(email, password));
     }
 
     return (
@@ -65,6 +69,21 @@ export const LoginPage = () => {
                         />
                     </Grid>
 
+                    <Grid 
+                        container
+                        sx={{mt:1}}
+                        display={!!errorMessage ? '' : 'none'} // el doble !! convierte en boolean, si hay errorMessage se muestra el alert
+                    >
+                        <Grid
+                            item
+                            xs={12}                            
+                        >
+                            <Alert severity="error">
+                                {errorMessage}
+                            </Alert>
+                        </Grid>
+                    </Grid>
+
                     <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
                         <Grid item xs={12} sm={6}>
                             <Button
@@ -72,6 +91,7 @@ export const LoginPage = () => {
                                 type="submit"
                                 variant="contained"
                                 fullWidth
+                                onClick={onCredentialsSingIn}
                             >
                                 Login
                             </Button>

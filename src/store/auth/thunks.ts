@@ -1,7 +1,7 @@
 import { AppThunk } from "../store"
-import { Auth, AuthAction, RegistarPage } from "../../interfaces";
+import { Auth, AuthAction, LoginPage, RegistarPage } from "../../interfaces";
 import { login, logout, setCheckingCredentials } from "./"
-import { registerUser, singInWithGoogle } from "../../firebase/providers";
+import { loginUser, registerUser, singInWithGoogle } from "../../firebase/providers";
 
 
 // Los thunks es un listado de funciones asyncronas
@@ -82,4 +82,43 @@ export const startRegisterUserWithEmailPassword = (email: string, password: stri
         }
         dispatch(login(authAction));
     }
+}
+
+export const startLoginWithEmailPassword = (email: string, password: string): AppThunk => {
+
+    return async (dispatch) => {
+        dispatch(setCheckingCredentials());
+
+        let userLogin: LoginPage = {
+            email,
+            password
+        }
+
+        const { ok, displayName, errorMessage, photoURL, uid } = await loginUser(userLogin);
+
+        if (!ok) {
+            let authAction: AuthAction = {
+                auth: null!,
+                errorMessage: errorMessage,
+                status: 'not-authenticated',
+                ok: ok
+            }
+            return dispatch(logout(authAction));
+        }
+
+        let auth: Auth = {
+            displayName: displayName!,
+            email: email!,
+            photoURL: photoURL!,
+            uid: uid!
+        }
+        let authAction: AuthAction = {
+            auth: auth,
+            errorMessage: '',
+            status: 'authenticated',
+            ok: ok
+        }
+        dispatch(login(authAction));
+    }
+
 }

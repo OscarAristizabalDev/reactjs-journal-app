@@ -18,3 +18,8 @@ export interface RegistarPage {
     password: string,
     displayName: string
 }
+
+export interface LoginPage {
+    email: string,
+    password: string
+}
