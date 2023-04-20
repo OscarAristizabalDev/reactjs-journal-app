@@ -1,4 +1,4 @@
-import { FormEvent } from "react"
+import { FormEvent, useState } from "react"
 import { Link as RouterLink } from "react-router-dom"
 import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 
@@ -7,9 +7,9 @@ import { useForm } from "../../hooks"
 import { RegistarPage } from "../../interfaces"
 
 const formData = {
-    email: 'oscar@gmail.com',
-    password: '1234',
-    displayName: 'Oscar Aristizabal'
+    email: '',
+    password: '',
+    displayName: ''
 }
 
 const formValidations = {
@@ -20,6 +20,8 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
     const {
         formState, displayName, email, password, onCambiarInput,
         isFormValid, displayNameValid, emailValid, passwordValid
@@ -27,7 +29,7 @@ export const RegisterPage = () => {
 
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // previe el recarge de la pantalla
-        console.log(formState)
+        setFormSubmitted(true);
     }
 
     console.log(emailValid)
@@ -46,7 +48,7 @@ export const RegisterPage = () => {
                             name="displayName"
                             value={displayName}
                             onChange={(event) => onCambiarInput(event)}
-                            error={!displayNameValid}
+                            error={!!displayNameValid && formSubmitted} // el doble !! lo convierte en valor boolean
                             helperText={displayNameValid}
                         />
                     </Grid>
@@ -61,6 +63,8 @@ export const RegisterPage = () => {
                             name="email"
                             value={email}
                             onChange={(event) => onCambiarInput(event)}
+                            error={!!emailValid && formSubmitted} // el doble !! lo convierte en valor boolean
+                            helperText={emailValid}
                         />
                     </Grid>
 
@@ -73,6 +77,8 @@ export const RegisterPage = () => {
                             name="password"
                             value={password}
                             onChange={(event) => onCambiarInput(event)}
+                            error={!!passwordValid && formSubmitted} // el doble !! lo convierte en valor boolean
+                            helperText={passwordValid}
                         />
                     </Grid>
 

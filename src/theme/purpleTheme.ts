@@ -14,5 +14,14 @@ export const purpleTheme = createTheme({
         error: {
             main: red.A400
         }
-    }
+    },
+    // components: {
+    //     MuiFormHelperText: {
+    //         styleOverrides: {
+    //             root: {
+    //                 color: "red"
+    //             }
+    //         }
+    //     }
+    // }
 })
