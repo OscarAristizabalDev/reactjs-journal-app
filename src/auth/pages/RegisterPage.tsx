@@ -1,12 +1,13 @@
-import { FormEvent, useState } from "react"
+import { FormEvent, useMemo, useState } from "react"
 import { Link as RouterLink } from "react-router-dom"
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 
 import { AuthLayout } from "../layout/AuthLayout"
 import { useForm } from "../../hooks"
 import { RegistarPage } from "../../interfaces"
-import { useAppDispatch } from "../../store"
+import { RootState, useAppDispatch } from "../../store"
 import { startRegisterUserWithEmailPassword } from "../../store/auth"
+import { useSelector } from "react-redux"
 
 const formData = {
     email: '',
@@ -26,6 +27,14 @@ export const RegisterPage = () => {
     const dispatch = useAppDispatch();
 
     const [formSubmitted, setFormSubmitted] = useState(false);
+
+    // el hook useSelector de react-redux permite leer datos del store
+    const { status, errorMessage } = useSelector((state: RootState) => state.auth);
+
+    // useMemo es un hook que permite memorizar valores, 
+    // En este caso vamos a memorizar el resultado del status, si el status cambia se va a obtener un nuevo valor
+    // En este ejemplo se devuelve un boolean, si es cheking true, de lo contrario false
+    const isChekingAuthentication = useMemo(() => status === 'checking', [status])
 
     const {
         formState, displayName, email, password, onCambiarInput,
@@ -89,11 +98,23 @@ export const RegisterPage = () => {
                     </Grid>
 
                     <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+
+                        <Grid
+                            item
+                            xs={12}
+                            display={!!errorMessage ? '' : 'none'} // el doble !! convierte en boolean, si hay errorMessage se muestra el alert
+                        >
+                            <Alert severity="error">
+                                {errorMessage}
+                            </Alert>
+                        </Grid>
+
                         <Grid item xs={12}>
                             <Button
                                 type="submit"
                                 variant="contained"
                                 fullWidth
+                                disabled={isChekingAuthentication}
                             >
                                 Crear cuenta
                             </Button>
