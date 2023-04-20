@@ -1,10 +1,11 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { FirebaseAuth } from './config';
-import { Auth, AuthAction } from '../interfaces';
+import { Auth, AuthAction, RegistarPage } from '../interfaces';
 
 
 const googleProvider = new GoogleAuthProvider();
 
+// Permite autenticarse con google usando FireBase
 export const singInWithGoogle = async () => {
     try {
         const result = await signInWithPopup(FirebaseAuth, googleProvider);
@@ -31,3 +32,30 @@ export const singInWithGoogle = async () => {
         }
     }
 }
+
+export const registerUser = async ({ email, password, displayName }: RegistarPage) => {
+
+    try {
+
+        const response = await createUserWithEmailAndPassword(FirebaseAuth, email, password);
+        const { uid, photoURL } = response.user;
+        console.log({uid, photoURL})
+        return {
+            ok: true,
+            uid,
+            photoURL,
+            email,
+            displayName
+        }
+
+    } catch (error) {
+
+        console.log(error);
+
+        return {
+            ok: false,
+            errorMessage: error.message
+        }
+    }
+
+} 

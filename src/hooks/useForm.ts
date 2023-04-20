@@ -53,7 +53,6 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
             // a cada campo del formulario se ejecuta la función que valida, si cumple retorna un null, de lo contrario el mensaje de error
             formCheckedValues[`${formField}Valid`] = fn(formState[formField]) ? null : errorMessage;
         }
-        console.log(formCheckedValues)
         setFormValidationState(formCheckedValues);
 
     }

@@ -14,7 +14,7 @@ export interface AuthAction {
 }
 
 export interface RegistarPage {
-    email: [any, string],
-    password: [any, string],
-    displayName: [any, string]
+    email: string,
+    password: string,
+    displayName: string
 }

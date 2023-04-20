@@ -5,6 +5,8 @@ import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { AuthLayout } from "../layout/AuthLayout"
 import { useForm } from "../../hooks"
 import { RegistarPage } from "../../interfaces"
+import { useAppDispatch } from "../../store"
+import { startRegisterUserWithEmailPassword } from "../../store/auth"
 
 const formData = {
     email: '',
@@ -20,6 +22,9 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+    // con useDispath puedo ejecutar cualquier acción, ya sea desde un thunks, o directamente desde el reducer del store
+    const dispatch = useAppDispatch();
+
     const [formSubmitted, setFormSubmitted] = useState(false);
 
     const {
@@ -30,9 +35,10 @@ export const RegisterPage = () => {
     const onSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // previe el recarge de la pantalla
         setFormSubmitted(true);
-    }
 
-    console.log(emailValid)
+        if (!isFormValid) return;
+        dispatch(startRegisterUserWithEmailPassword(email, password, displayName));
+    }
 
     return (
         <AuthLayout title="Crear cuenta">

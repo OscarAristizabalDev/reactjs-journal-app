@@ -1,7 +1,7 @@
-import { singInWithGoogle } from "../../firebase/providers";
-import { Auth, AuthAction } from "../../interfaces";
 import { AppThunk } from "../store"
+import { Auth, AuthAction, RegistarPage } from "../../interfaces";
 import { login, logout, setCheckingCredentials } from "./"
+import { registerUser, singInWithGoogle } from "../../firebase/providers";
 
 
 // Los thunks es un listado de funciones asyncronas
@@ -41,5 +41,20 @@ export const startGoogleSingIn = (): AppThunk => {
         }
         dispatch(login(authAction));
 
+    }
+}
+
+export const startRegisterUserWithEmailPassword = (email: string, password: string, displayName: string): AppThunk => {
+    return async (dispatch) => {
+
+        dispatch(setCheckingCredentials());
+
+        let registerUserData: RegistarPage = {
+            email,
+            password,
+            displayName
+        }
+
+        const result = await registerUser(registerUserData);
     }
 }
