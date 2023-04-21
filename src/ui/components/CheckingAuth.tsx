@@ -11,7 +11,7 @@ export const CheckingAuth = () => {
             // sx permite personalizar estilos adicionales y acceder a los estilos del tema que tengan definido, ejemplo purpleTheme
             sx={{ minHeight: '100vh', backgroundColor: 'primary.main', padding: 4 }}
         >
-            <Grid item
+            <Grid container
                 direction='row'
                 justifyContent='center'
             >
