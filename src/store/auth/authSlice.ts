@@ -4,7 +4,7 @@ import { AuthAction } from '../../interfaces';
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
-        status: 'not-authenticated', //'cheking', 'not-authenticated', 'authenticated'
+        status: 'checking', //'cheking', 'not-authenticated', 'authenticated'
         uid: '',
         email: '',
         displayName: '',
