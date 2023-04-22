@@ -1,5 +1,7 @@
+import { useSelector } from 'react-redux';
 import { Box, Divider, Drawer, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography } from '@mui/material'
 import { TurnedInNot } from '@mui/icons-material';
+import { RootState } from '../../store';
 
 
 interface SideBarProps {
@@ -7,6 +9,10 @@ interface SideBarProps {
 }
 
 export const SideBar = ({ drawerWidth = 240 }: SideBarProps) => {
+
+    // el hook useSelector de react-redux permite leer datos del store
+    const { displayName } = useSelector((state: RootState) => state.auth);
+
     return (
         <Box
             component='nav'
@@ -22,7 +28,7 @@ export const SideBar = ({ drawerWidth = 240 }: SideBarProps) => {
             >
                 <Toolbar>
                     <Typography variant='h6' noWrap component='div'>
-                        Oscar Aristizabal
+                        {displayName}
                     </Typography>
                 </Toolbar>
                 <Divider />

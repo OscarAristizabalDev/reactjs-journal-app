@@ -18,8 +18,8 @@ export const authSlice = createSlice({
 
             state.status = status;
             state.uid = uid;
-            state.email = displayName;
-            state.displayName = email;
+            state.email = email;
+            state.displayName = displayName;
             state.photoURL = photoURL;
             state.errorMessage = ''
         },
