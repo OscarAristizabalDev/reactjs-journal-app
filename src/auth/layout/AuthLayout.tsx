@@ -10,7 +10,9 @@ interface AuthLayoutProps {
 export const AuthLayout = ({ children, title }: AuthLayoutProps) => {
     return (
         // Grid container se puede ver como un div
-        <Grid container
+        <Grid 
+            className="animate__animated animate__fadeIn animate__faster"
+            container
             spacing={0}
             direction="column"
             alignItems="center"
