@@ -23,3 +23,19 @@ export interface LoginPage {
     email: string,
     password: string
 }
+
+export interface Note {
+    id: string,
+    title: string,
+    body: string,
+    date: number,
+    imageUrls: string[]
+}
+
+export interface JournalAction{
+    isSaving: true,
+    messageSaved: '',
+    notes: Note[],
+    active: Note
+}
+
