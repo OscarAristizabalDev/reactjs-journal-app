@@ -3,8 +3,18 @@ import { AddOutlined } from '@mui/icons-material';
 
 import { JournalLayout } from '../layout/JournalLayout';
 import { NoteView, NothingSelectedView } from '../views';
+import { useAppDispatch } from '../../store';
+import { startNewNote } from '../../store/journal/thunks';
 
 export const JournalPage = () => {
+
+    // con useDispath puedo ejecutar cualquier acción, ya sea desde un thunks, o directamente desde el reducer del store
+    const dispatch = useAppDispatch()
+
+    const onClickNewNote = () => {
+        dispatch(startNewNote());
+    }
+
     return (
         <JournalLayout>
 
@@ -15,6 +25,7 @@ export const JournalPage = () => {
             {/* s<NoteView /> */}
 
             <IconButton
+                onClick={onClickNewNote}
                 size='large'
                 sx={{
                     color: 'white',
