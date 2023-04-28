@@ -33,7 +33,7 @@ export interface Note {
 }
 
 export interface JournalAction{
-    isSaving: true,
+    isSaving: boolean,
     messageSaved: '',
     notes: Note[],
     active: Note

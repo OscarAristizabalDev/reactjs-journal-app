@@ -4,17 +4,22 @@ import { JournalAction, Note } from '../../interfaces';
 export const journalSlice = createSlice({
     name: 'journal',
     initialState: {
-        isSaving: true,
+        isSaving: false,
         messageSaved: '',
         notes: [] as Note[],
         active: {} as Note
     } as JournalAction,
     reducers: {
-        addNewEmptyState: (state, action: PayloadAction<JournalAction>) => {
 
+        savingNewNote: (state, action:PayloadAction<boolean>) => {
+            state.isSaving = action.payload
         },
-        setActiveNote: (state, action: PayloadAction<JournalAction>) => {
-
+        addNewEmptyNote: (state, action: PayloadAction<Note>) => {
+            state.notes.push(action.payload);
+            state.isSaving = false;
+        },
+        setActiveNote: (state, action: PayloadAction<Note>) => {
+            state.active = action.payload
         },
         setNotes: (state, action: PayloadAction<JournalAction>) => {
 
@@ -32,4 +37,12 @@ export const journalSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addNewEmptyState, setActiveNote, setNotes, setSaving, updateNote, deleteNote } = journalSlice.actions;
+export const { 
+    addNewEmptyNote, 
+    deleteNote,
+    savingNewNote, 
+    setActiveNote, 
+    setNotes, 
+    setSaving, 
+    updateNote
+} = journalSlice.actions;

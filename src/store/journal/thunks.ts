@@ -3,11 +3,14 @@ import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { Note } from "../../interfaces";
 import { AppThunk } from "../store";
 import { FirebaseDB } from '../../firebase/config';
+import { addNewEmptyNote, savingNewNote, setActiveNote } from './';
 
 export const startNewNote = (): AppThunk => {
     // getState permite obtener la información respectiva del store
     return async (dispatch, getState) => {
 
+        dispatch(savingNewNote(true));
+        
         const { uid } = getState().auth;
 
         const note: Note = {
@@ -23,6 +26,8 @@ export const startNewNote = (): AppThunk => {
         // Permite registrar información dentro de un documento
         await setDoc(newDoc, note);
 
-
+        note.id = newDoc.id;
+        dispatch(addNewEmptyNote(note));
+        dispatch(setActiveNote(note));
     }
 }
