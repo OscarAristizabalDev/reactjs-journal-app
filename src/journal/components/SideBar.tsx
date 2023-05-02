@@ -15,8 +15,6 @@ export const SideBar = ({ drawerWidth = 240 }: SideBarProps) => {
     const { displayName, uid } = useSelector((state: RootState) => state.auth);
     const { notes } = useSelector((state: RootState) => state.journal);
 
-    console.log(uid)
-
     return (
         <Box
             component='nav'

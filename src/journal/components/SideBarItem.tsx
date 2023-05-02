@@ -1,9 +1,15 @@
+import { useMemo } from "react"
 import { Grid, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 import { TurnedInNot } from "@mui/icons-material"
+
 import { Note } from "../../interfaces"
-import { useMemo } from "react"
+import { useAppDispatch } from "../../store"
+import { setActiveNote } from "../../store/journal"
 
 export const SideBarItem = ({ note }: SideBarItemProps) => {
+
+    // con useDispath puedo ejecutar cualquier acción, ya sea desde un thunks, o directamente desde el reducer del store
+    const dispatch = useAppDispatch()
 
     const { title, body, id } = note;
 
@@ -15,9 +21,14 @@ export const SideBarItem = ({ note }: SideBarItemProps) => {
             : title
     }, [note.title]);
 
+    const onSetActiveNote = () => {
+        dispatch(setActiveNote(note))
+    }
+
     return (
         <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton
+                onClick={onSetActiveNote}>
                 <ListItemIcon>
                     <TurnedInNot />
                 </ListItemIcon>
