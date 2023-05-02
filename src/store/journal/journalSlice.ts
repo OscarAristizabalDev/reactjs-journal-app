@@ -21,8 +21,8 @@ export const journalSlice = createSlice({
         setActiveNote: (state, action: PayloadAction<Note>) => {
             state.active = action.payload
         },
-        setNotes: (state, action: PayloadAction<JournalAction>) => {
-
+        setNotes: (state, action: PayloadAction<Note[]>) => {
+            state.notes.push(...action.payload)
         },
         setSaving: (state) => {
 

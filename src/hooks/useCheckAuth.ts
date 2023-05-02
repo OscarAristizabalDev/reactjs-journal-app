@@ -7,6 +7,7 @@ import { FirebaseAuth } from "../firebase/config";
 import { RootState, useAppDispatch } from "../store";
 import { login, logout } from "../store/auth";
 import { Auth, AuthAction } from "../interfaces";
+import { startLoadingNotes } from "../store/journal/thunks";
 
 export const useCheckAuth = () => {
 
@@ -47,6 +48,7 @@ export const useCheckAuth = () => {
                 ok: true
             }
             dispatch(login(authAction));
+            dispatch(startLoadingNotes());
         })
 
     }, [])

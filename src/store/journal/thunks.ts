@@ -3,14 +3,15 @@ import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { Note } from "../../interfaces";
 import { AppThunk } from "../store";
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote } from './';
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from './';
+import { loadNotes } from '../../journal/helpers';
 
 export const startNewNote = (): AppThunk => {
     // getState permite obtener la información respectiva del store
     return async (dispatch, getState) => {
 
         dispatch(savingNewNote(true));
-        
+
         const { uid } = getState().auth;
 
         const note: Note = {
@@ -29,5 +30,16 @@ export const startNewNote = (): AppThunk => {
         note.id = newDoc.id;
         dispatch(addNewEmptyNote(note));
         dispatch(setActiveNote(note));
+    }
+}
+
+
+export const startLoadingNotes = (): AppThunk => {
+    return async (dispatch, getState) => {
+        const { uid } = getState().auth;
+        if (!uid) throw new Error('El UID del usuario no existe');
+
+        const notes = await loadNotes(uid)
+        dispatch(setNotes(notes));
     }
 }
