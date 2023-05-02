@@ -10,6 +10,12 @@ import { useForm } from "../../hooks"
 import { RootState, useAppDispatch } from "../../store"
 import { checkAutentication, startGoogleSingIn, startLoginWithEmailPassword } from "../../store/auth"
 
+
+const formData = {
+    email: '',
+    password: ''
+}
+
 export const LoginPage = () => {
 
     // con useDispath puedo ejecutar cualquier acción, ya sea desde un thunks, o directamente desde el reducer del store
@@ -17,10 +23,7 @@ export const LoginPage = () => {
     // el hook useSelector de react-redux permite leer datos del store
     const { status, errorMessage } = useSelector((state: RootState) => state.auth);
 
-    const { email, password, onCambiarInput }: any = useForm({
-        email: '',
-        password: ''
-    });
+    const { email, password, onCambiarInput }: any = useForm(formData);
 
     // useMemo es un hook que permite memorizar valores, 
     // En este caso vamos a memorizar el resultado del status, si el status cambia se va a obtener un nuevo valor
@@ -69,14 +72,14 @@ export const LoginPage = () => {
                         />
                     </Grid>
 
-                    <Grid 
+                    <Grid
                         container
-                        sx={{mt:1}}
+                        sx={{ mt: 1 }}
                         display={!!errorMessage ? '' : 'none'} // el doble !! convierte en boolean, si hay errorMessage se muestra el alert
                     >
                         <Grid
                             item
-                            xs={12}                            
+                            xs={12}
                         >
                             <Alert severity="error">
                                 {errorMessage}

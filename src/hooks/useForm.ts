@@ -14,13 +14,17 @@ export const useForm = (initialForm = {}, formValidations = {}) => {
         createValidators();
     }, [formState]); // cada que el formState cambio se llama el metodo createValidators
 
+    useEffect(() => {
+        setFormState(initialForm); // se envian los nuevos valores al formulario
+    }, [initialForm]); // cada que el initialForm cambie 
+
 
     // Memorizamos el valor isFormValid, solo cambia cuando hay un cambio en el formValidationState (formulario)
     const isFormValid = useMemo(
         () => {
             // Se recorren todas las llaves que tiene el objeto formValidationState, es decir, el estado de la validaciones
             for (const formValue of Object.keys(formValidationState)) {
-                if(formValidationState[formValue] !== null) return false;
+                if (formValidationState[formValue] !== null) return false;
             }
             return true;
         },
