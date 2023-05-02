@@ -26,7 +26,6 @@ export const startNewNote = (): AppThunk => {
         const newDoc = doc(collection(FirebaseDB, `${uid}/journal/notes`));
         // Permite registrar información dentro de un documento
         await setDoc(newDoc, note);
-
         note.id = newDoc.id;
         dispatch(addNewEmptyNote(note));
         dispatch(setActiveNote(note));

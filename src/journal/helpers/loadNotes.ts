@@ -11,11 +11,11 @@ export const loadNotes = async (uid: string = '') => {
 
     const notes: Note[] = [];
     docs.forEach(doc => {
-
+        console.log(doc)
         // se obtiene cada uno de los valores que tiene cada documento
-        const { id, title, body, date, imageUrls } = doc.data();
+        const { title, body, date, imageUrls } = doc.data();
         const note: Note = {
-            id,
+            id: doc.id,
             title,
             body,
             date,
