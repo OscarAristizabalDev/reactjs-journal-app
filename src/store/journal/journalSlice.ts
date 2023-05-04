@@ -24,11 +24,19 @@ export const journalSlice = createSlice({
         setNotes: (state, action: PayloadAction<Note[]>) => {
             state.notes = action.payload;
         },
-        setSaving: (state) => {
-
+        setSaving: (state, action:PayloadAction<boolean>) => {
+            state.isSaving = true;
         },
-        updateNote: (state, action: PayloadAction<JournalAction>) => {
-
+        updateNote: (state, action: PayloadAction<Note>) => {
+            state.isSaving = false;
+            // la función devuelve un nuevo array con las modificaciones realizadas
+            // map itera el actual listado
+            state.notes = state.notes.map(note => {
+                if(note.id === action.payload.id){
+                    return action.payload;
+                }
+                return note;
+            });
         },
         deleteNote: (state, action: PayloadAction<JournalAction>) => {
 
