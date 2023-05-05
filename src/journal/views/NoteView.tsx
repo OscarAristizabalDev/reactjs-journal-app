@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
+import { FormEvent, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
-import { SaveOutlined } from '@mui/icons-material';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { SaveOutlined, UploadOutlined } from '@mui/icons-material';
+import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
@@ -30,6 +30,9 @@ export const NoteView = () => {
             return newDate.toUTCString();
         }, [date]);
 
+    // el hook useRef permite hacer referencia a un elemento html
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
     useEffect(() => {
         dispatch(setActiveNote(formState));
     }, [formState]); // Cada que cambie algo del formulario note view
@@ -44,12 +47,36 @@ export const NoteView = () => {
         dispatch(startSaveNote());
     }
 
+    const onFileInputChange = (event: FormEvent<HTMLInputElement>) => {
+        const target = event.target as HTMLInputElement;
+        if (Number(target.files) === 0) return;
+        console.log(target.files)
+        dispatch(startUploadingFiles(target.files));
+    }
+
     return (
         <Grid container direction='row' justifyContent='space-between' alignItems='center' sx={{ mb: 1 }}>
             <Grid item>
                 <Typography fontSize={39} fontWeight='light' >{dateString}</Typography>
             </Grid>
             <Grid item>
+
+                <input
+                    type='file'
+                    multiple
+                    ref={fileInputRef}
+                    onChange={(event) => onFileInputChange(event)}
+                    style={{ display: 'none' }}
+                />
+
+                <IconButton
+                    color='primary'
+                    disabled={isSaving}
+                    onClick={() => fileInputRef.current?.click()}
+                >
+                    <UploadOutlined />
+                </IconButton>
+
                 <Button
                     color="primary"
                     sx={{ padding: 2 }}
