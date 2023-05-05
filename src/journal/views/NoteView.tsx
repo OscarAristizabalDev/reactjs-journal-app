@@ -1,7 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
+
 import { SaveOutlined } from '@mui/icons-material';
 import { Button, Grid, TextField, Typography } from '@mui/material';
+
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.css';
 
 import { ImageGallery } from '../components'
 import { useForm } from '../../hooks';
@@ -14,7 +18,7 @@ export const NoteView = () => {
     const dispatch = useAppDispatch()
     // el hook useSelector de react-redux permite leer datos del store
     // en este caso se necesita obtener la nota activa
-    const { active: activeNote } = useSelector((state: RootState) => state.journal);
+    const { active: activeNote, messageSaved, isSaving } = useSelector((state: RootState) => state.journal);
 
     // se utiliza el custom Hook useForm para el manejo del formulario
     const { body, title, date, onCambiarInput, formState }: any = useForm(activeNote);
@@ -30,6 +34,12 @@ export const NoteView = () => {
         dispatch(setActiveNote(formState));
     }, [formState]); // Cada que cambie algo del formulario note view
 
+    useEffect(() => {
+        if (messageSaved.length > 0) {
+            Swal.fire('Nota actualizada', messageSaved, 'success')
+        }
+    }, [messageSaved])
+
     const onSaveNote = () => {
         dispatch(startSaveNote());
     }
@@ -44,6 +54,7 @@ export const NoteView = () => {
                     color="primary"
                     sx={{ padding: 2 }}
                     onClick={onSaveNote}
+                    disabled={isSaving}
                 >
                     <SaveOutlined sx={{ fontSize: 30, mr: 1 }} />
                     Guardar

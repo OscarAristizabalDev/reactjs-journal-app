@@ -34,7 +34,7 @@ export interface Note {
 
 export interface JournalAction{
     isSaving: boolean,
-    messageSaved: '',
+    messageSaved: string,
     notes: Note[],
     active: Note
 }
