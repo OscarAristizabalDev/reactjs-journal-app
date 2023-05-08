@@ -50,7 +50,7 @@ export const NoteView = () => {
     const onFileInputChange = (event: FormEvent<HTMLInputElement>) => {
         const target = event.target as HTMLInputElement;
         if (Number(target.files) === 0) return;
-        
+
         dispatch(startUploadingFiles(target.files));
     }
 
@@ -115,7 +115,7 @@ export const NoteView = () => {
             </Grid>
 
             {/* Image gallery */}
-            <ImageGallery />
+            <ImageGallery images={activeNote.imageUrls} />
 
         </Grid>
     )
