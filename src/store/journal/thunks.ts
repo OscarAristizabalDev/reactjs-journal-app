@@ -3,7 +3,7 @@ import { collection, doc, setDoc } from 'firebase/firestore/lite';
 import { Note } from "../../interfaces";
 import { AppThunk } from "../store";
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from './';
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './';
 import { fileUpload, loadNotes } from '../../journal/helpers';
 
 export const startNewNote = (): AppThunk => {
@@ -68,6 +68,19 @@ export const startSaveNote = (): AppThunk => {
 export const startUploadingFiles = (files: FileList | null): AppThunk => {
     return async (dispatch, getState) => {
         dispatch(setSaving(true));
-        await fileUpload(files![0]);
+
+        const fileUploadPromises = [];
+        if (files != null) {
+            for (const file of files) {
+                // por cada archivo se agrega cada promesa que devuelve el metodo fileUpload
+                /// En este punto no se esta ejecutan la función fileUpload
+                fileUploadPromises.push(fileUpload(file))
+            }
+        }
+        // En este punto si se ejecutan las peticiones
+        // Se envía como paramétro el listado de promesas
+        const photosUrls = await Promise.all(fileUploadPromises);
+
+        dispatch(setPhotosToActiveNote(photosUrls));
     }
 }
