@@ -2,6 +2,7 @@ import { AppThunk } from "../store"
 import { Auth, AuthAction, LoginPage, RegistarPage } from "../../interfaces";
 import { login, logout, setCheckingCredentials } from "./"
 import { loginUser, logoutUser, registerUser, singInWithGoogle } from "../../firebase/providers";
+import { clearNotesLogout } from "../journal";
 
 
 // Los thunks es un listado de funciones asyncronas
@@ -135,6 +136,7 @@ export const startLogout = (): AppThunk => {
                 status: 'not-authenticated',
                 ok: false
             }
+            dispatch(clearNotesLogout())
             return dispatch(logout(authAction));
         }
 
