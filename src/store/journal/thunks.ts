@@ -1,9 +1,9 @@
-import { collection, doc, setDoc } from 'firebase/firestore/lite';
+import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore/lite';
 
 import { Note } from "../../interfaces";
 import { AppThunk } from "../store";
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './';
+import { addNewEmptyNote, deleteNoteById, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from './';
 import { fileUpload, loadNotes } from '../../journal/helpers';
 
 export const startNewNote = (): AppThunk => {
@@ -82,5 +82,18 @@ export const startUploadingFiles = (files: FileList | null): AppThunk => {
         const photosUrls = await Promise.all(fileUploadPromises);
 
         dispatch(setPhotosToActiveNote(photosUrls));
+    }
+}
+
+export const startDeletingNote = (): AppThunk => {
+    return async (dispatch, getState) => {
+        const { uid } = getState().auth;
+        const { active: activeNote } = getState().journal;
+
+        // Se obtiene la referencia del documento mediante la base de datos y la ruta.
+        const docRef = doc(FirebaseDB, `${uid}/journal/notes/${activeNote.id}`);
+        await deleteDoc(docRef);
+
+        dispatch(deleteNoteById(activeNote.id!))
     }
 }
