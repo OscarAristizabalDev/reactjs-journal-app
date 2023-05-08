@@ -4,7 +4,7 @@ import { Note } from "../../interfaces";
 import { AppThunk } from "../store";
 import { FirebaseDB } from '../../firebase/config';
 import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setSaving, updateNote } from './';
-import { loadNotes } from '../../journal/helpers';
+import { fileUpload, loadNotes } from '../../journal/helpers';
 
 export const startNewNote = (): AppThunk => {
     // getState permite obtener la información respectiva del store
@@ -62,5 +62,12 @@ export const startSaveNote = (): AppThunk => {
 
         dispatch(updateNote(activeNote));
 
+    }
+}
+
+export const startUploadingFiles = (files: FileList | null): AppThunk => {
+    return async (dispatch, getState) => {
+        dispatch(setSaving(true));
+        await fileUpload(files![0]);
     }
 }
